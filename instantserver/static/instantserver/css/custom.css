@@ -1,0 +1,50 @@
+
+/* Custom header styles
+-------------------------------------------------- */
+h1{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 140px;
+    font-weight: 700;
+}
+
+h2{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+
+
+
+/* Custom styles
+-------------------------------------------------- */
+#message{
+    width:500px;
+    margin:auto;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0;
+    -webkit-transition: opacity 1s ease-in-out;/* transition pour Chrome et Safari */
+    -moz-transition: opacity 1s ease-in-out;/* transition pour Firefox */
+    -o-transition: opacity 1s ease-in-out;/* transition pour Opéra */
+    transition: opacity 1s ease-in-out; /* on écrit cette ligne à la fin de façon à ce que ce soit elle qui soit prise en compte lorsque l'attribut transition sera pris en compte par tous les navigateurs */
+}

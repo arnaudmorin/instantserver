@@ -1,0 +1,12 @@
+<html>
+<head>
+</head>
+<body>
+    <h1>Hello!</h1>
+    <ul>
+        {% for vm in virtual_machines %}
+            <li><a href="{% url 'instantserver:vm_ip' vm.ip_address %}">{{ vm.ip_address }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

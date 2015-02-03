@@ -1,0 +1,127 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instant Server</title>
+    <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'instantserver/css/custom.css' %}" />
+</head>
+<body>
+    <!-- 
+    ########################################################################
+                             Instant Server
+                      
+             _              _     _     _                        
+            | |            (_)   | |   (_)                       
+            | |__  _ __ ___ _ ___| |__  _ _ __  _ __   _____   __
+            | '_ \| '__/ _ \ |_  / '_ \| | '_ \| '_ \ / _ \ \ / /
+            | |_) | | |  __/ |/ /| | | | | | | | | | | (_) \ V / 
+            |_.__/|_|  \___|_/___|_| |_|_|_| |_|_| |_|\___/ \_/  
+
+
+    ########################################################################
+    -->
+    
+    <div class="container">
+		<div class="col-sm-8 col-sm-offset-2 text-center">
+			<h1>Instant Server!</h1>
+			
+			<p><button type="button" class="btn btn-primary btn-lg" id="create">Create one for me!</button></p>
+			
+			
+			<p id="message"></p>
+			<!--
+			<a href="{% url 'instantserver:vm_list' %}">List all VM</a>
+			-->
+		</div>
+		
+	</div>
+	
+	<footer class="footer">
+      <div class="container">
+        <p class="text-muted text-center">created by <a href="http://www.opensteak.fr">opensteak</a> team</p>
+      </div>
+    </footer>
+    
+    
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'instantserver/js/jquery.cookie.js' %}"></script>
+    <script>
+	$(document).ready(function() {
+		// Get CSRF from server
+		var csrftoken = $.cookie('csrftoken');
+		function csrfSafeMethod(method) {
+			// these HTTP methods do not require CSRF protection
+			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		function sameOrigin(url) {
+			// test that a given url is a same-origin URL
+			// url could be relative or scheme relative or absolute
+			var host = document.location.host; // host + port
+			var protocol = document.location.protocol;
+			var sr_origin = '//' + host;
+			var origin = protocol + sr_origin;
+			// Allow absolute or scheme relative URLs to same origin
+			return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+				(url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+				// or any other URL that isn't scheme relative or absolute i.e relative.
+				!(/^(\/\/|http:|https:).*/.test(url));
+		}
+		$.ajaxSetup({
+			beforeSend: function(xhr, settings) {
+				if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+					// Send the token to same-origin, relative URLs only.
+					// Send the token only if the method warrants CSRF protection
+					// Using the CSRFToken value acquired earlier
+					xhr.setRequestHeader("X-CSRFToken", csrftoken);
+				}
+			}
+		});
+		
+		$("#create").click(function(event){
+			console.log("Create a VM");
+			$('#message').fadeTo("slow", 0);
+			$.ajax({
+				type:"POST",
+				url:"/vm/",
+				data: {
+					'video': 'salut'
+				},
+				success: function(vm){
+					console.log(vm);
+					
+					$('#message').html(
+						  "<h2>Ok done! Server info:</h2>"
+						+ "<div class='container-fluid'>"
+						+ "	 <div class='row'>"
+						+ "    <div class='col-md-6'>IP Address: </div>"
+						+ "    <div class='col-md-6'>"+vm.ip_address+"</div>"
+						+ "	 </div>"
+						+ "	 <div class='row'>"
+						+ "    <div class='col-md-6'>Login: </div>"
+						+ "    <div class='col-md-6'>"+vm.login+"</div>"
+						+ "	 </div>"
+						+ "	 <div class='row'>"
+						+ "    <div class='col-md-6'>Password: </div>"
+						+ "    <div class='col-md-6'>"+vm.password+"</div>"
+						+ "	 </div>"
+						+ "	 <div class='row'>"
+						+ "    <div class='col-md-12'>Your server is up for 1 week! It will be deleted on: <p>date</p></div>"
+						+ "	 </div>"
+						+ "</div>"
+					);
+					$('#message').fadeTo("slow", 1);
+				}
+			});
+		});
+	});
+    </script>
+</body>
+</html>
