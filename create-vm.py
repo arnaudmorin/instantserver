@@ -59,10 +59,11 @@ def main():
     #pp.pprint(f.__dict__)
 
     nova.servers.create(
-        name = "my-server", 
+        name = "tutu-server", 
         flavor = f,
         image = i,
         nics = [{"net-id": n.id}],
+        key_name = "id-rsa-sans-mot-de-passe"
     )
 
 
