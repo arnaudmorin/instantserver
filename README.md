@@ -27,13 +27,13 @@ urlpatterns = patterns('',
 To let django build your database, just run:
 
 ```bash
-python3 manage.py migrate
+python manage.py migrate
 ```
 
 ## Run
 
 ```bash
-python3 manage.py runserver
+python manage.py runserver
 ```
 
 The browse it with through http://127.0.0.1:8000/
