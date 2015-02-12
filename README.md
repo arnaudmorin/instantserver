@@ -5,6 +5,21 @@ Create Instant Server for developpers using OpenStack API
 ### Install & create a django project
 This is a django application, so you should already have create a django project (see: https://docs.djangoproject.com/en/1.7/intro/tutorial01/). 
 
+### Add this app to your project
+
+```python
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+#    'todo',
+    'instantserver',
+)
+```
+
 ### Configure the project
 Then you must configure your project to redirect every request to this application by modifying your projects' urls.py like this:
 
