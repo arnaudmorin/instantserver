@@ -47,24 +47,26 @@ def main():
     nova = nvclient.Client(**creds)
 
     print_title("servers list")
-    #servers = nova.servers.list()
-    #pp.pprint(servers)
+    pp.pprint(nova.servers.list())
 
-    sprout = nova.servers.find(name='Sprout')
+    print_title("images list")
+    pp.pprint(nova.images.list())
+
+    #sprout = nova.servers.find(name='Sprout')
     #pp.pprint(sprout.__dict__)
 
     f = nova.flavors.find(name = 'm1.tiny')
-    i = nova.images.find(name = 'Ubuntu_14.04_LTS')
+    i = nova.images.find(name = 'Ubuntu 14.04.1 LTS')
     n = nova.networks.find(label = 's_Cld4Net_internal_net')
     #pp.pprint(f.__dict__)
 
-    nova.servers.create(
-        name = "tutu-server", 
-        flavor = f,
-        image = i,
-        nics = [{"net-id": n.id}],
-        key_name = "id-rsa-sans-mot-de-passe"
-    )
+    #nova.servers.create(
+    #    name = "tutu-server", 
+    #    flavor = f,
+    #    image = i,
+    #    nics = [{"net-id": n.id}],
+    #    key_name = "id-rsa-sans-mot-de-passe"
+    #)
 
 
 
