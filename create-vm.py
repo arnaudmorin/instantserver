@@ -61,53 +61,45 @@ def main():
     creds = get_credentials("nova")
     nova = novaclient.Client(**creds)
     cinder = cinderclient.Client(**creds)
-
+    
     print_title("servers list")
     p(nova.servers.list())
-
+    
     print_title("images list")
     p(nova.images.list())
-
-    # Create a volume
-
-    new_server = nova.servers.create(
-        name = "instantserver-1", 
-        flavor = f,
-        image = i,
-        nics = [{"net-id": n.id}],
-        key_name = k,
-        userdata = u,
-        security_groups = s
-    )
-
+    
     # OpenWatt
-    f = nova.flavors.find(name = 'm1.tiny')
-    i = nova.images.find(name = 'Ubuntu 14.04.1 LTS')
-    n = nova.networks.find(label = 's_Cld4Net_internal_net')
+    #~ f = nova.flavors.find(name = 'm1.tiny')
+    #~ i = nova.images.find(name = 'Ubuntu 14.04.1 LTS')
+    #~ n = nova.networks.find(label = 's_Cld4Net_internal_net')
+    #~ u = "#cloud-config\npassword: moutarde\nchpasswd: { expire: False }\nssh_pwauth: True"
+    #~ k = "idrsa-sansmotdepasse"
+    #~ s = ["default"]
+    
+    # OpenSteak
+    f = nova.flavors.find(name = 'instantserver-small')
+    i = nova.images.find(name = 'Ubuntu 14.10 64b')
+    n = nova.networks.find(label = 'instantserver')
     u = "#cloud-config\npassword: moutarde\nchpasswd: { expire: False }\nssh_pwauth: True"
     k = "idrsa-sansmotdepasse"
-    s = ["default"]
-
-    # OpenSteak
-    #f = nova.flavors.find(name = 'instantserver-small')
-    #i = nova.images.find(name = 'Ubuntu 14.10 64b')
-    #n = nova.networks.find(label = 'instantserver')
-    #u = "#cloud-config\npassword: moutarde\nchpasswd: { expire: False }\nssh_pwauth: True"
-    #k = "idrsa-sansmotdepasse"
-    #s = ["Tout-Autorise-Entrant-Sortant"]
-    #v = create_volume(cinder, i.id)
-
-    # Do create
+    s = ["Tout-Autorise-Entrant-Sortant"]
+    v = create_volume(cinder, i.id)
+    
+    p(v)
+    return
+    
+    # Do create
     new_server = nova.servers.create(
         name               = "instantserver-1", 
         flavor             = f,
-        image              = i,
+        #image              = i,
         nics               = [{"net-id": n.id}],
         key_name           = k,
         userdata           = u,
-        security_groups    = s
+        security_groups    = s,
+        config_drive       = v.id
     )
-
+    
     p(new_server)
 
 if __name__ == '__main__':
